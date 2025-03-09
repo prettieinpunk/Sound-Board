@@ -1,14 +1,44 @@
-//create an array of the sounds
-const sounds = ['applause', 'boo', 'gasp', 'tada', 'victory', 'wrong'];
+const sounds = ['polite meow', 'cranky meow', 'alien meow', 'complaining meow', 'petite meow', 'purr meow'];
 
-//for each sound make a button, add a class 'btn', update the text, append to DOM
+// Create buttons for each sound
 sounds.forEach((sound) => {
-//create a button
     const btn = document.createElement('button');
-//add a class of button to the button element
     btn.classList.add('btn');
-//set the button label text to b the same as string value in the sounds array
     btn.innerText = sound;
-//add the button to the DOM
+
+    // Play sound & create floating paw on click
+    btn.addEventListener('click', (e) => {
+        stopSounds();
+        const audio = document.getElementById(sound);
+        if (audio) audio.play(); // Ensure the sound exists
+
+        // Create paw particle effect at click position
+        createParticle(e.clientX, e.clientY);
+    });
+
     document.getElementById('buttons').appendChild(btn);
 });
+
+// Stop all sounds before playing a new one
+function stopSounds() {
+    sounds.forEach((sound) => {
+        const snd = document.getElementById(sound);
+        if (snd) {
+            snd.pause();
+            snd.currentTime = 0;
+        }
+    });
+}
+
+// Floating paw print effect
+function createParticle(x, y) {
+    const particle = document.createElement('img');
+    particle.src = 'paw.gif'; // Make sure this file exists
+    particle.classList.add('particle');
+    document.body.appendChild(particle);
+    
+    particle.style.left = `${x}px`;
+    particle.style.top = `${y}px`;
+
+    setTimeout(() => particle.remove(), 1000);
+}
